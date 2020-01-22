@@ -14,7 +14,9 @@ router.post('/fullstatement/:accountNumber',accounts.checkToken,statement_contro
 router.post('/ift/:accountNumber',accounts.checkToken,basic_transactions_controller.ift)
 router.post('/mobiletransfer/:accountNumber',accounts.checkToken,basic_transactions_controller.mobile)
 router.post('/eft/:accountNumber',accounts.checkToken,basic_transactions_controller.eft)
-router.post('/pesalink/:accountNumber',accounts.checkToken,basic_transactions_controller.pesalink)
+router.post('src/pesalink/:accountNumber',accounts.checkToken,basic_transactions_controller.pesalink)
+//b2b
+router.post('/b2b/:accountNumber',accounts.checkToken,basic_transactions_controller.b2b)
 router.post('/swift/:accountNumber',accounts.checkToken,basic_transactions_controller.swift)
 router.post('/rtgs/:accountNumber',accounts.checkToken,basic_transactions_controller.rtgs)
 

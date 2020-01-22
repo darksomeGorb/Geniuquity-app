@@ -48,6 +48,15 @@ exports.pesalink = async(req,res) => {
     let sign = signature.sign(`${body.transfer.amount}${body.transfer.currencyCode}${body.transfer.reference}${body.destination.name}${body.source.accountNumber}`)
     sendTransaction(req,sign,body,res)
 }
+exports.b2b = async(req,res) => {
+    console.log("b2b")
+    let body = req.body  
+    let ref = await getRef()
+    body.transfer.reference = ref
+    body.transfer.description = `${body.transfer.description}/${ref}`
+    let sign = signature.sign(`${body.transfer.amount}${body.transfer.currencyCode}${body.transfer.reference}${body.destination.name}${body.source.accountNumber}`)
+    sendTransaction(req,sign,body,res)
+}
 
 exports.rtgs = async(req,res) => {
     console.log('rtgs')
