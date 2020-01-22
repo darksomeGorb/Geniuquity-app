@@ -6,7 +6,8 @@ let mongoose = require('mongoose')
 let api_router = require('./routes/routes')
 let path = require('path')
 
-require('dotenv').config()
+
+require('dotenv').config() 
 
 let port = process.env.PORT || 3000
 
@@ -33,6 +34,7 @@ app.use(express.static(__dirname + '/static'));
 app.get('/', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'static','index.html'))
 })
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
