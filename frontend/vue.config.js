@@ -4,6 +4,7 @@ let config
 
 if (process.env.VUE_APP_BOOK) {
   config = {
+    outputDir:path.resolve(__dirname,'../static'),
     lintOnSave: false,
     pages: {
       index: {

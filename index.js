@@ -28,7 +28,7 @@ app.post('/api/auth/login',auth.login)
 app.post('/api/auth/code',auth.codeLogin)
 app.use('/apii',auth.middleware,api_router)
 
-app.use(express.static(__dirname + '/frontend/dist'));
+app.use(express.static(__dirname + '/static'));
 
 app.get('/', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'static','index.html'))
