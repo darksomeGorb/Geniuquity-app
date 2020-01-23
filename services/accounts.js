@@ -30,7 +30,6 @@ async function getKey(account){
         password : account.password
       }
     
-      //generating bearer token
       let config = {
         method: 'post',
         url: `${process.env.JENGAURL}identity/v2/token`,
