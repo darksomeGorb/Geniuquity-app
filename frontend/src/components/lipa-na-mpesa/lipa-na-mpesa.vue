@@ -8,7 +8,7 @@
                   <div class="xs12 md6 align--center justify--center">
                       <va-input 
                         label="Customer Mobile Number"
-                        v-model="transferNumber"
+                        v-model="mobileNumber"
                         :placeholder="transferNumberLabel"
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferNumberErrors"
@@ -99,15 +99,16 @@ export default {
         
 
          let data = {
-customer: {
-    countryCode: "KE",
-    mobileNumber: "0765555131"
-  },
-  airtime: {
-    amount: "100",
-    reference: "",
-    telco: "Safaricom"
-  },
+"customer": {
+      mobileNumber: this.mobileNumber,
+      countryCode: "KE"
+   },
+   transaction: {
+      amount: transactionAmount,
+      description: `${this.mobileNumber}/${this.TransctionAmount}/${this.transferDescription}`,
+      businessNumber: "174379",
+      reference: ""
+   }
 }
        
         

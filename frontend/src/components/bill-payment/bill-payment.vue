@@ -7,7 +7,7 @@
                   
                   <div class="xs12 md6 align--center justify--center">
                       <va-input 
-                        label="BillerCode"
+                        label="Business Number"
                         v-model="billerCode"
                         placeholder="Business Code"
                         :error="!!transferNumberErrors.length"
@@ -21,22 +21,18 @@
                         :error-messages="transferAmountErrors"
 
                       />
-
                       <va-input 
-                        label="sender Name"
-                        v-model="senderName"
-                        placeholder="Your Name"
-                        :error="!!transferNumberErrors.length"
-                        :error-messages="transferNumberErrors"
-                      />
-
-                      <va-input 
-                        label="mobile Number"
-                        v-model="payerMobileNumber"
+                        label="Payer Phone Number"
+                        v-model="mobileNumber"
                         placeholder="Your Phone Number"
                         :error="!!transferNumberErrors.length"
-                        :error-messages="transferNumberErrors"
+                        :error-messages="transferAmountErrors"
+
                       />
+
+                      
+
+                     
                      
                   </div> 
               </div>
@@ -131,13 +127,13 @@ export default {
       currency: "KES"
    },
    payer: {
-      name: this.$store.state.activeAccount.accountNumber,
-      account: this.transferNumber,
+      name: this.$store.state.activeAccount.holderName,
+      account: this.$store.state.activeAccount.accountNumber,
       reference: "",
-      mobileNumber: "0764555320"
+      mobileNumber: this.mobileNumber
    },
-   partnerId: this.$store.state.activeAccount.accountNumber,
-   remarks:  `${this.transferNumber}/${this.destinationName}/${this.transferDescription}`
+   partnerId:"0011547896523",
+   remarks:  `${this.billercode}/${this.transferDescription}`
 }
        
         

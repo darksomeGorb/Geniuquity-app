@@ -16,25 +16,18 @@
                       />
 
                       <va-input 
-                        :label="transferNumberLabel"
-                        v-model="transferNumber"
-                        :placeholder="transferNumberLabel"
+                        label="Sender Mobile Number"
+                        v-model="mobileNumber"
+                        placeholder="Your Phone Number"
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferNumberErrors"
                       />
 
+                      
                       <va-input 
-                        label="senderName"
-                        v-model="senderName"
-                        placeholder="senderName"
-                        :error="!!transferNumberErrors.length"
-                        :error-messages="transferAmountErrors"
-
-                      />
-                      <va-input 
-                        label="destinationAccountNumber"
-                        v-model="destinationAccountNumber"
-                        placeholder="destinationAccountNumber"
+                        label="Receiver Account Number"
+                        v-model="receiverAccountNumber"
+                        placeholder="Account Number To Receive payment"
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferAmountErrors"
 
@@ -45,15 +38,7 @@
                      
                   </div> 
               </div>
-                   <va-input 
-                        type="textarea" 
-                        label="Description"
-                        v-model="transferDescription"
-                        placeholder="Description"
-                        :error="!!transferDescriptionErrors.length"
-                        :error-messages="transferDescriptionErrors"
-                      />
-                     
+                  
                      <va-button color="success" @click="submit">
                         pay
                      </va-button>
@@ -120,10 +105,10 @@ export default {
         
          let data = {
             amount : this.transferAmount,
-            senderMobileNumber: this.transferNumber,
+            senderMobileNumber: this.mobileNumber,
             senderName: this.$store.state.activeAccount.holderName,
-            destinationShortcode: this.bank.code,
-            destinationAccountNumber: destination.accountNumber = this.transferNumber,
+            destinationShortcode: "987654345678",
+            destinationAccountNumber:  this.receiverAccountNumber,
            transferReference: "",
            sourceAccountNumber:this.$store.state.activeAccount.accountNumber
 

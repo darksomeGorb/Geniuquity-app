@@ -2,12 +2,12 @@
     <div class="dashboard">
       <div class="row row-equal flex align--center justify--center">
         <div class="flex xs7">
-          <va-card title="PURCHASE-AIRTIME">
+          <va-card title="PESALINK TRANSFER">
               <div class="row flex align--center justify--center">
-                 
+                  
                   <div class="xs12 md6 align--center justify--center">
                       <va-input 
-                        label="customer Mobile Number"
+                        label="Customer Mobile Number"
                         v-model="mobileNumber"
                         :placeholder="transferNumberLabel"
                         :error="!!transferNumberErrors.length"
@@ -15,26 +15,25 @@
                       />
                       <va-input 
                         label="Amount"
-                        v-model="AirtimeAmount"
+                        v-model="airtimeAmount"
                         placeholder="Amount"
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferAmountErrors"
 
                       />
+
+                      <va-select
+                        label="TYPE"
+                        v-model="transferType"
+                        textBy="description"
+                        :options="transferTypeOptions"
+                      />
                      
                   </div> 
               </div>
-                   <va-input 
-                        type="textarea" 
-                        label="Description"
-                        v-model="transferDescription"
-                        placeholder="Description"
-                        :error="!!transferDescriptionErrors.length"
-                        :error-messages="transferDescriptionErrors"
-                      />
-                     
+                  
                      <va-button color="success" @click="submit">
-                        purchase
+                        Send Money
                      </va-button>
                       
           </va-card>
@@ -49,6 +48,7 @@ import { Banks } from '../../store/banks'
 export default {
   name: 'purchase-airtime',
   components: {
+     
    
   },
   methods: {
@@ -105,20 +105,19 @@ export default {
          }
 
          let data = {
- customer: {
+            customer: {
     countryCode: "KE",
     mobileNumber: this.mobileNumber
   },
   airtime: {
-    amount: this.AirtimeAmount,
-    reference: "",
-    telco: "Safaricom"
+    amount: this.aitimeAmount,
+    "reference": "",
+    "telco": this.transferType
   }
-   }
-         
+         }
        
         
-        this.$http.post(`${this.$apiUrl}/jenga/airtime/${this.$store.state.activeAccount.accountNumber}`,data)
+        this.$http.post(`${this.$apiUrl}/jenga/pesalink/${this.$store.state.activeAccount.accountNumber}`,data)
         .then(data=>{
              this.$store.commit('setLoading', false)
              this.$swal.fire(
@@ -143,7 +142,7 @@ export default {
   computed : {
      transferNumberLabel(){
        let type = this.transferType.description == undefined ? this.transferType : this.transferType.description
-       return type == 'bank' ? "Account Number" : "phone Number"
+       return type == 'bank' ? "Account Number" : "Mobile Number"
      },
        formReady(){
         return !this.transferTypeErrors.length && !this.destinationNameErrors.length && !this.transferNumberErrors.length
@@ -155,11 +154,15 @@ export default {
           transferTypeOptions: [
             {
               id: 1,
-              description: 'bank',
+              description: 'Safaricom',
             },
             {
               id: 2,
-              description: 'mobile',
+              description: 'Airtel',
+            },
+            {
+              id: 3,
+              description: 'Equitel',
             }
         ],
         bank : {},
