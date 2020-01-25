@@ -2,7 +2,7 @@
   <va-navbar class="app-navbar">
     <header-selector slot="selector" :minimized.sync="minimizedProxy"/>
     <template slot="logo">
-        <h1 style="color:white;">Genius </h1>
+        <h1 style="color:white;">Genius Dynamics</h1>
     </template>
  
     <div class="app-navbar__actions row flex-nowrap align--center">

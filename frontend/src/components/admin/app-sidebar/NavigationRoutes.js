@@ -31,7 +31,7 @@ export const navigationRoutes = {
         },
         {
           name: 'rtgstransfer',
-          displayName: 'rtgs',
+          displayName: 'RTGS',
         },
         {
           name: 'ift',
@@ -55,15 +55,15 @@ export const navigationRoutes = {
       },
     },
     {
-      name: 'b2b',
-      displayName: 'b2b',
+      name: 'bill-payment',
+      displayName: 'bill-payment',
       meta: {
         iconClass: 'vuestic-iconset-auth',
       },
     },
     {
-      name: 'bill-payment',
-      displayName: 'bill-payment',
+      name: 'b2b',
+      displayName: 'b2b',
       meta: {
         iconClass: 'vuestic-iconset-auth',
       },

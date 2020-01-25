@@ -122,12 +122,4 @@ export const Banks = [
     name: 'JAMII BORA BANK',
     code: '51',
   },
-  {
-    name: 'LIPA NA MPESA',
-    code: '100',
-  },
-  {
-    name: 'PAY BILL',
-    code: '200',
-  },
 ]

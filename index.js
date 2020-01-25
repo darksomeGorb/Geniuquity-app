@@ -26,7 +26,7 @@ let auth = require('./services/auth')
 
 app.post('/api/auth/login',auth.login)
 app.post('/api/auth/code',auth.codeLogin)
-app.use('/apii',auth.middleware,api_router)
+app.use('/api',auth.middleware,api_router)
 
 app.use(express.static(__dirname + '/static'));
 

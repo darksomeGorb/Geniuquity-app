@@ -1,7 +1,7 @@
 <template>
 <div class="auth-layout row align-content--center">
   <div class="flex xs12 pa-3 flex-center">
-     <h1 style="color:white;text-align:center;">GENIUS DYNAMICS </h1>
+     <h1 style="color:white;text-align:center;">GENIUS </h1>
   </div>
 
   <div class="flex xs12 pa-3">

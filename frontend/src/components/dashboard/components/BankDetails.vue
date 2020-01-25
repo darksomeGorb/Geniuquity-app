@@ -1,7 +1,7 @@
 <template>
     <va-card
         stripe="info"
-        title="Account "
+        title="Account Details"
       >
          <div style="text-align:center;">
               <h6  id="account-details-name">{{ accountName }}</h6>

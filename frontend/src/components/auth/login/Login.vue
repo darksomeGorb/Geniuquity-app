@@ -52,7 +52,7 @@ export default {
         return
       }
         this.$store.commit('setLoading', true) 
-       this.$router.push({ name: 'dashboard' })
+      // this.$router.push({ name: 'dashboard' })
       this.$http.post(`${this.$apiUrl}auth/login`,{
         username: this.username,
         password: this.password

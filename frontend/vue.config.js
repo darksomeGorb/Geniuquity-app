@@ -4,7 +4,6 @@ let config
 
 if (process.env.VUE_APP_BOOK) {
   config = {
-    outputDir:path.resolve(__dirname,'../static'),
     lintOnSave: false,
     pages: {
       index: {
@@ -28,7 +27,7 @@ if (!process.env.VUE_APP_BOOK) {
         filename: 'index.html',
         // when using title option,
         // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
-        title: 'Genius Dynamics',
+        title: 'Vuestic Admin',
         // chunks to include on this page, by default includes
         // extracted common chunks and vendor chunks.
         chunks: ['chunk-vendors', 'chunk-common', 'index'],
