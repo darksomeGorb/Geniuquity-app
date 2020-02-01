@@ -49,6 +49,48 @@ exports.pesalink = async(req,res) => {
     sendTransaction(req,sign,body,res)
 }
 
+exports.b2b = async(req,res) => {
+    console.log("b2b")
+    let body = req.body  
+    let ref = await getRef()
+    body.transfer.reference = ref
+    body.transfer.description = `${body.transfer.description}/${ref}`
+    let sign = signature.sign(`${body.destinationShortcode}${ref}${body.destinationAccountNumber}${body.sourceAccountNumber}${body.amount}`)
+    sendTransaction(req,sign,body,res)
+}
+
+exports.bill = async(req,res) => {
+    console.log("bill")
+    let body = req.body  
+    let ref = await getRef()
+    body.transfer.reference = ref
+    
+    let sign = signature.sign(`${body.biller.billerCode}${body.bill.amount}${ref}${body.partnerId}${body.source.accountNumber}`)
+    sendTransaction(req,sign,body,res)
+}
+
+
+
+
+exports.airtime = async(req,res) => {
+    console.log("airtime")
+    let body = req.body 
+    let ref = await getRef()
+    body.airtime.reference = ref
+    let code=4757094936
+    let sign = signature.sign(`${4757094936}${body.airtime.telco}${body.airtime.amount}${ref}`)
+    sendTransaction(req,sign,body,res)
+}
+exports.lipa = async(req,res) => {
+    console.log("lipa")
+    let body = req.body  
+    let ref = await getRef()
+    body.transfer.reference = ref
+    body.transfer.description = `${body.transfer.description}/${ref}`
+    let sign = signature.sign(`${body.transfer.amount}${body.transfer.currencyCode}${body.transfer.reference}${body.destination.name}${body.source.accountNumber}`)
+    sendTransaction(req,sign,body,res)
+}
+
 exports.rtgs = async(req,res) => {
     console.log('rtgs')
     let body = req.body
@@ -79,7 +121,11 @@ async function sendTransaction(req,sign,body,res){
  
      let config = {
          method: 'POST',
-         url: `${process.env.JENGAURL}transaction/v2/remittance`,
+         //url:  `${process.env.JENGAURL}transaction/v2/airtime`, 
+         //url:  `${process.env.JENGAURL}transaction/v2/request`,
+         url:  `${process.env.JENGAURL}transaction/v2/request`,
+         //url:  `${process.env.JENGAURL}transaction/v2/mpesa/stkpush`,
+         //url:`${process.env.JENGAURL}transaction/v2/remittance`,
          headers: {
              'Authorization': `Bearer ${account.token}`,
              'signature': sign,
@@ -88,8 +134,9 @@ async function sendTransaction(req,sign,body,res){
          data : body
      } 
      
+     
      try{
-         let data = await axios(config)
+         let data = await axios(config )
          if(data.data.status != undefined){
             if(data.data.status == 'SUCCESS'){
                 res.send({ message : "Transaction successful"})

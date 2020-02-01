@@ -143,7 +143,7 @@ export default {
              }
          }
        
-        
+        'https://sandbox.jengahq.io/transaction-test/v2/pesalink/inquire'
         this.$http.post(`${this.$apiUrl}/jenga/pesalink/${this.$store.state.activeAccount.accountNumber}`,data)
         .then(data=>{
              this.$store.commit('setLoading', false)

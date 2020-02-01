@@ -2,15 +2,15 @@
     <div class="dashboard">
       <div class="row row-equal flex align--center justify--center">
         <div class="flex xs7">
-          <va-card title="b2b TRANSFER">
+          <va-card title="B2B">
               <div class="row flex align--center justify--center">
                  
                   <div class="xs12 md6 align--center justify--center">
-                      <va-input 
+                     <va-input 
                         label="Amount"
                         v-model="transferAmount"
                         placeholder="Amount"
-                        :error="!!transferNumberErrors.length"
+                        :error="!!transferAmountErrors.length"
                         :error-messages="transferAmountErrors"
 
                       />
@@ -28,17 +28,14 @@
                         label="Receiver Account Number"
                         v-model="receiverAccountNumber"
                         placeholder="Account Number To Receive payment"
-                        :error="!!transferNumberErrors.length"
-                        :error-messages="transferAmountErrors"
+                        :error="!!destinationNameErrors.length"
+                        :error-messages="destinationNameErrors"
 
                       />
 
-                      
-
-                     
                   </div> 
               </div>
-                  
+                   
                      <va-button color="success" @click="submit">
                         pay
                      </va-button>
@@ -50,10 +47,10 @@
 </template>
 
 <script>
-import { Banks } from '../../store/banks'
+
 
 export default {
-  name: 'b2b',
+  name: 'lipa',
   components: {
    
   },
@@ -77,16 +74,16 @@ export default {
        return yyyy + "-" + mm + "-"+ dd
      },
     async submit(){
-        this.transferTypeErrors = this.transferType.description != undefined ? [] : ["p"]
-        this.destinationNameErrors = this.destinationName ? [] : ["Name cannot be empty"]
-        this.transferNumberErrors = this.transferNumber ? [] : ["Enter number"]
+        
+        this.destinationNameErrors = this.receiverAccountNumber ? [] : ["Enter Bussiness Number"]
+        this.transferNumberErrors = this.mobileNumber ? [] : ["Enter Phone number"]
         this.transferAmountErrors = this.transferAmount ? [] : ["Enter amount to transfer"]
-        this.transferDescriptionErrors = this.transferDescription ? [] : ["Descrption cannot be empty"]
+      
 
         if(!this.formReady) return
 
         let ans = await this.$swal.fire({
-            title: `Send ksh ${this.transferAmount} to  ${this.transferNumber} of ${this.destinationName}? \n Charges Apply`,
+            title: `Send ksh ${this.transferAmount} to  ${this.receiverAccountNumber} made by ${this.mobileNumber}? \n Charges Apply`,
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#4AE392',
@@ -96,14 +93,9 @@ export default {
 
           if(!ans.value) return
          this.$store.commit('setLoading', true)
-         let destination =   destination = {
-                type : this.transferType.description,
-                countryCode : "KE",
-                name : this.destinationName,
-          }
-
+         
         
-         let data = {
+ let data = {
             amount : this.transferAmount,
             senderMobileNumber: this.mobileNumber,
             senderName: this.$store.state.activeAccount.holderName,
@@ -114,8 +106,9 @@ export default {
 
          }
        
+       
         
-        this.$http.post(`${this.$apiUrl}/jenga/pesalink/${this.$store.state.activeAccount.accountNumber}`,data)
+        this.$http.post(`${this.$apiUrl}/jenga/request/${this.$store.state.activeAccount.accountNumber}`,data)
         .then(data=>{
              this.$store.commit('setLoading', false)
              this.$swal.fire(
@@ -138,40 +131,21 @@ export default {
      }
   },
   computed : {
-     transferNumberLabel(){
-       let type = this.transferType.description == undefined ? this.transferType : this.transferType.description
-       return type == 'bank' ? "Account Number" : "Mobile Number"
-     },
-       formReady(){
-        return !this.transferTypeErrors.length && !this.destinationNameErrors.length && !this.transferNumberErrors.length
+     formReady(){
+        return   !this.transferNumberErrors.length
         && !this.transferAmountErrors.length &&  !this.transferDescriptionErrors.length
      }
   },
   data(){
       return{
-          transferTypeOptions: [
-            {
-              id: 1,
-              description: 'bank',
-            },
-            {
-              id: 2,
-              description: 'mobile',
-            }
-        ],
-        bank : {},
-        bankOptions : [],
-        transferType: {},
-        transferNumber: "",
-        destinationName : "",
-        transferDescription: "",
+     mobileNumber: "",
+        receiverAccountNumber:"",
         transferAmount: "",
-        bankCodeErrors : [],
-        transferTypeErrors : [],
         transferNumberErrors : [],
         destinationNameErrors : [],
         transferDescriptionErrors:  [],
         transferAmountErrors : [],
+      
       
       }
   },

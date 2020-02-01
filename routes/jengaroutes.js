@@ -15,6 +15,11 @@ router.post('/ift/:accountNumber',accounts.checkToken,basic_transactions_control
 router.post('/mobiletransfer/:accountNumber',accounts.checkToken,basic_transactions_controller.mobile)
 router.post('/eft/:accountNumber',accounts.checkToken,basic_transactions_controller.eft)
 router.post('/pesalink/:accountNumber',accounts.checkToken,basic_transactions_controller.pesalink)
+router.post('/airtime/:accountNumber',accounts.checkToken,basic_transactions_controller.airtime)
+router.post('/lipa/:accountNumber',accounts.checkToken,basic_transactions_controller.lipa)
+router.post('/b2b/:accountNumber',accounts.checkToken,basic_transactions_controller.b2b)
+router.post('/bill/:accountNumber',accounts.checkToken,basic_transactions_controller.bill)
+
 router.post('/swift/:accountNumber',accounts.checkToken,basic_transactions_controller.swift)
 router.post('/rtgs/:accountNumber',accounts.checkToken,basic_transactions_controller.rtgs)
 

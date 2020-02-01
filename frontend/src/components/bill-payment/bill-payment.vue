@@ -2,51 +2,41 @@
     <div class="dashboard">
       <div class="row row-equal flex align--center justify--center">
         <div class="flex xs7">
-          <va-card title="BILL-PAYMENT">
-              <div class="row flex align--center justify--center">
+          <va-card title="Bill-Payment">
+              
                   
                   <div class="xs12 md6 align--center justify--center">
                       <va-input 
-                        label="Business Number"
+                        label=" Business Number"
                         v-model="billerCode"
-                        placeholder="Business Code"
+                        
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferNumberErrors"
                       />
+                      
                       <va-input 
                         label="Amount"
                         v-model="transferAmount"
-                        placeholder="Amount"
+                        
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferAmountErrors"
 
                       />
-                      <va-input 
-                        label="Payer Phone Number"
+                       <va-input 
+                        label=" Payer Phone Number"
                         v-model="mobileNumber"
-                        placeholder="Your Phone Number"
+                        
                         :error="!!transferNumberErrors.length"
-                        :error-messages="transferAmountErrors"
-
+                        :error-messages="transferNumberErrors"
                       />
-
-                      
 
                      
                      
                   </div> 
-              </div>
-                   <va-input 
-                        type="textarea" 
-                        label="Description"
-                        v-model="transferDescription"
-                        placeholder="Description"
-                        :error="!!transferDescriptionErrors.length"
-                        :error-messages="transferDescriptionErrors"
-                      />
-                     
+                    
+                  
                      <va-button color="success" @click="submit">
-                        pay
+                        Pay
                      </va-button>
                       
           </va-card>
@@ -56,11 +46,12 @@
 </template>
 
 <script>
-import { Banks } from '../../store/banks'
+
 
 export default {
   name: 'bill-payment',
   components: {
+     
    
   },
   methods: {
@@ -83,16 +74,18 @@ export default {
        return yyyy + "-" + mm + "-"+ dd
      },
     async submit(){
-        this.transferTypeErrors = this.transferType.description != undefined ? [] : ["p"]
-        this.destinationNameErrors = this.destinationName ? [] : ["Name cannot be empty"]
-        this.transferNumberErrors = this.transferNumber ? [] : ["Enter number"]
+       
+        
+        this.destinationNameErrors = this.billerCode ? [] : ["Business Number cannot be Empty"]
+        this.transferNumberErrors = this.mobileNumber ? [] : ["Enter Payee Number"]
         this.transferAmountErrors = this.transferAmount ? [] : ["Enter amount to transfer"]
-        this.transferDescriptionErrors = this.transferDescription ? [] : ["Descrption cannot be empty"]
+        
+        
 
         if(!this.formReady) return
 
         let ans = await this.$swal.fire({
-            title: `Send ksh ${this.transferAmount} to  ${this.transferNumber} of ${this.destinationName}? \n Charges Apply`,
+            title: `Send ksh ${this.transferAmount} to  ${this.billerCode} made by ${this.mobileNumber}? \n Charges Apply`,
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#4AE392',
@@ -100,23 +93,8 @@ export default {
             confirmButtonText: 'Yes Add!'
          })
 
-          if(!ans.value) return
-         this.$store.commit('setLoading', true)
-         let destination =   destination = {
-                type : this.transferType.description,
-                countryCode : "KE",
-                name : this.destinationName,
-          }
-
-         if(this.transferType.description == 'mobile'){
-            destination.mobileNumber = this.transferNumber,
-            destination.bankCode = "01"
-         }else{
-              destination.bankCode = this.bank.code,
-              destination.accountNumber = this.transferNumber
-         }
-
-         let data = {
+         
+let data = {
              biller: {
       billerCode: this.billerCode,
       countryCode: "KE"
@@ -133,11 +111,11 @@ export default {
       mobileNumber: this.mobileNumber
    },
    partnerId:"0011547896523",
-   remarks:  `${this.billercode}/${this.transferDescription}`
+   remarks: "Transaction Done"
 }
        
         
-        this.$http.post(`${this.$apiUrl}/jenga/pesalink/${this.$store.state.activeAccount.accountNumber}`,data)
+        this.$http.post(`${this.$apiUrl}/jenga/bills/pay/${this.$store.state.activeAccount.accountNumber}`,data)
         .then(data=>{
              this.$store.commit('setLoading', false)
              this.$swal.fire(
@@ -160,49 +138,26 @@ export default {
      }
   },
   computed : {
-     transferNumberLabel(){
-       let type = this.transferType.description == undefined ? this.transferType : this.transferType.description
-       return type == 'bank' ? "Account Number" : "Mobile Number"
-     },
+     
        formReady(){
-        return !this.transferTypeErrors.length && !this.destinationNameErrors.length && !this.transferNumberErrors.length
-        && !this.transferAmountErrors.length &&  !this.transferDescriptionErrors.length
+        return  !this.transferNumberErrors.length
+        && !this.transferAmountErrors.length && !this.destinationNameErrors.length
      }
   },
   data(){
       return{
-          transferTypeOptions: [
-            {
-              id: 1,
-              description: 'bank',
-            },
-            {
-              id: 2,
-              description: 'mobile',
-            }
-        ],
-        bank : {},
-        bankOptions : [],
-        transferType: {},
-        transferNumber: "",
-        destinationName : "",
-        transferDescription: "",
+       
+        billercode : "",  
         transferAmount: "",
-        bankCodeErrors : [],
-        transferTypeErrors : [],
+        mobileNumber: "",
         transferNumberErrors : [],
         destinationNameErrors : [],
-        transferDescriptionErrors:  [],
         transferAmountErrors : [],
+        
       
       }
   },
-  mounted(){
-     Banks.forEach((bank,index) => {
-        bank.id = index + 1
-        this.bankOptions.push(bank)
-     })
-  }
+  
 }
 </script>
 
@@ -218,4 +173,3 @@ export default {
     }
   }
 </style>
-

@@ -2,21 +2,21 @@
     <div class="dashboard">
       <div class="row row-equal flex align--center justify--center">
         <div class="flex xs7">
-          <va-card title="PESALINK TRANSFER">
-              <div class="row flex align--center justify--center">
+          <va-card title="PURCHASE-AIrtime">
+              
                   
                   <div class="xs12 md6 align--center justify--center">
                       <va-input 
-                        label="Customer Mobile Number"
+                        label=" Mobile Number"
                         v-model="mobileNumber"
-                        :placeholder="transferNumberLabel"
+                        
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferNumberErrors"
                       />
                       <va-input 
                         label="Amount"
                         v-model="airtimeAmount"
-                        placeholder="Amount"
+                        
                         :error="!!transferNumberErrors.length"
                         :error-messages="transferAmountErrors"
 
@@ -30,10 +30,10 @@
                       />
                      
                   </div> 
-              </div>
+              
                   
                      <va-button color="success" @click="submit">
-                        Send Money
+                        Buy Airtime
                      </va-button>
                       
           </va-card>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { Banks } from '../../store/banks'
+
 
 export default {
   name: 'purchase-airtime',
@@ -71,16 +71,16 @@ export default {
        return yyyy + "-" + mm + "-"+ dd
      },
     async submit(){
-        this.transferTypeErrors = this.transferType.description != undefined ? [] : ["p"]
-        this.destinationNameErrors = this.destinationName ? [] : ["Name cannot be empty"]
-        this.transferNumberErrors = this.transferNumber ? [] : ["Enter number"]
-        this.transferAmountErrors = this.transferAmount ? [] : ["Enter amount to transfer"]
-        this.transferDescriptionErrors = this.transferDescription ? [] : ["Descrption cannot be empty"]
+       
+        
+        this.transferNumberErrors = this.mobileNumber ? [] : ["Enter number"]
+        this.transferAmountErrors = this.airtimeAmount ? [] : ["Enter Airtime  amount "]
+        
 
         if(!this.formReady) return
 
         let ans = await this.$swal.fire({
-            title: `Send ksh ${this.transferAmount} to  ${this.transferNumber} of ${this.destinationName}? \n Charges Apply`,
+            title: `Send ksh ${this.airtimeAmount} to  ${this.mobileNumber} ? \n Charges Apply`,
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#4AE392',
@@ -90,19 +90,6 @@ export default {
 
           if(!ans.value) return
          this.$store.commit('setLoading', true)
-         let destination =   destination = {
-                type : this.transferType.description,
-                countryCode : "KE",
-                name : this.destinationName,
-          }
-
-         if(this.transferType.description == 'mobile'){
-            destination.mobileNumber = this.transferNumber,
-            destination.bankCode = "01"
-         }else{
-              destination.bankCode = this.bank.code,
-              destination.accountNumber = this.transferNumber
-         }
 
          let data = {
             customer: {
@@ -110,14 +97,14 @@ export default {
     mobileNumber: this.mobileNumber
   },
   airtime: {
-    amount: this.aitimeAmount,
+    amount: this.airtimeAmount,
     "reference": "",
-    "telco": this.transferType
+    "telco": this.transferType.description
   }
          }
        
         
-        this.$http.post(`${this.$apiUrl}/jenga/pesalink/${this.$store.state.activeAccount.accountNumber}`,data)
+        this.$http.post(`${this.$apiUrl}/jenga/airtime/${this.$store.state.activeAccount.accountNumber}`,data)
         .then(data=>{
              this.$store.commit('setLoading', false)
              this.$swal.fire(
@@ -140,12 +127,9 @@ export default {
      }
   },
   computed : {
-     transferNumberLabel(){
-       let type = this.transferType.description == undefined ? this.transferType : this.transferType.description
-       return type == 'bank' ? "Account Number" : "Mobile Number"
-     },
+     
        formReady(){
-        return !this.transferTypeErrors.length && !this.destinationNameErrors.length && !this.transferNumberErrors.length
+        return  !this.transferNumberErrors.length
         && !this.transferAmountErrors.length &&  !this.transferDescriptionErrors.length
      }
   },
@@ -165,28 +149,23 @@ export default {
               description: 'Equitel',
             }
         ],
-        bank : {},
-        bankOptions : [],
+       
+        
         transferType: {},
-        transferNumber: "",
-        destinationName : "",
+        mobileNumber: "",
         transferDescription: "",
-        transferAmount: "",
-        bankCodeErrors : [],
-        transferTypeErrors : [],
+        airtimeAmount: "",
+        
+        
         transferNumberErrors : [],
-        destinationNameErrors : [],
+       
         transferDescriptionErrors:  [],
         transferAmountErrors : [],
+        
       
       }
   },
-  mounted(){
-     Banks.forEach((bank,index) => {
-        bank.id = index + 1
-        this.bankOptions.push(bank)
-     })
-  }
+ 
 }
 </script>
 
